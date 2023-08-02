@@ -31,8 +31,7 @@ export default () => {
 
   return (
     <>
-      {!isLoading && <Table orders={orders} fetchOrdersHandler={fetchOrdersHandler} />}
-      {isLoading && <p>Loading...</p>}
+      <Table orders={orders} isLoading={isLoading} fetchOrdersHandler={fetchOrdersHandler}/>
     </>
   );
 };
