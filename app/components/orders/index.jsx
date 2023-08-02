@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import Table from "./table";
 
-const fetchOrders = async () => {
-  const response = await fetch("/api/orders.json");
+const fetchOrders = async (sortBy) => {
+  const params = new URLSearchParams();
+  params.append('sort_by', sortBy);
+  const url = `/api/orders.json?${params.toString()}`;
+  const response = await fetch(url);
   const data = await response.json();
   return data;
 };
@@ -11,22 +14,24 @@ export default () => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  async function fetchOrdersHandler(sortBy='') {
+    try {
+      setIsLoading(true);
+      const orders = await fetchOrders(sortBy);
+      setOrders(orders);
+      setIsLoading(false);
+    } catch (er) {
+      alert(`uh oh! ${er}`);
+    }
+  }
+
   useEffect(() => {
-    const go = async () => {
-      try {
-        const orders = await fetchOrders();
-        setOrders(orders);
-        setIsLoading(false);
-      } catch (er) {
-        alert(`uh oh! ${er}`);
-      }
-    };
-    go();
+    fetchOrdersHandler();
   }, []);
 
   return (
     <>
-      {!isLoading && <Table orders={orders} />}
+      {!isLoading && <Table orders={orders} fetchOrdersHandler={fetchOrdersHandler} />}
       {isLoading && <p>Loading...</p>}
     </>
   );

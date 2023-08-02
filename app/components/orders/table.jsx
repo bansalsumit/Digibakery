@@ -1,24 +1,30 @@
-const OrderTable = ({ orders }) => (
-  <table className="table orders-table">
-    <thead>
-      <tr>
-        <th>Order #</th>
-        <th>Ordered at</th>
-        <th>Pick up at</th>
-        <th>Customer Name</th>
-        <th>Item</th>
-        <th>Qty</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {orders.map((order) => (
-        <OrderRow key={order.id} order={order}  />
-      ))}
-    </tbody>
-  </table>
-);
+const OrderTable = ({ orders, fetchOrdersHandler }) => {
+  const orderSortingHandler = (sortBy) => {
+    fetchOrdersHandler(sortBy);
+  };
+
+  return (
+    <table className="table orders-table">
+      <thead>
+        <tr>
+          <th onClick={() => orderSortingHandler('id')}><u>Order #</u></th>
+          <th>Ordered at</th>
+          <th onClick={() => orderSortingHandler('pick_up_at')}><u>Pick up at</u></th>
+          <th onClick={() => orderSortingHandler('customer_name')}><u>Customer Name</u></th>
+          <th>Item</th>
+          <th>Qty</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {orders.map((order) => (
+          <OrderRow key={order.id} order={order} />
+        ))}
+      </tbody>
+    </table>
+  );
+};
 
 const OrderRow = ({ order }) => {
   return (
