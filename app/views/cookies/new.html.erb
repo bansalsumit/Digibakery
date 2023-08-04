@@ -11,6 +11,14 @@
     <div class="small-8 columns">
       <%= f.text_field :fillings %>
     </div>
+    <div class="small-3 columns">
+      <div class="wrapper">
+        <span class="minus">-</span>
+        <%= f.hidden_field :batch_size %>
+        <%= content_tag :span, f.object.batch_size, class: 'num', value: f.object.batch_size %>
+        <span class="plus">+</span>
+      </div>
+    </div>
   </div>
 
   <div class="row">
@@ -19,3 +27,24 @@
     </div>
   </div>
 <% end %>
+<script>
+  const plus = document.querySelector(".plus"),
+  minus = document.querySelector(".minus"),
+  num = document.querySelector(".num");
+  batch_size = document.querySelector("#cookie_batch_size")
+  let a = 1;
+  plus.addEventListener("click", ()=>{
+    a++;
+    a = (a < 10) ? "0" + a : a;
+    num.innerText = a;
+    batch_size.value = a;
+  });
+  minus.addEventListener("click", ()=>{
+    if(a > 1){
+      a--;
+      a = (a < 10) ? "0" + a : a;
+      num.innerText = a;
+      batch_size.value = a;
+    }
+  });
+</script>
