@@ -1,0 +1,6 @@
+:verbose: true
+:timeout: 25
+:queues:
+  - default
+development:
+  :concurrency: 5

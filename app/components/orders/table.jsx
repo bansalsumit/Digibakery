@@ -1,43 +1,45 @@
-const OrderTable = ({ orders }) => (
-  <table className="table orders-table">
-    <thead>
-      <tr>
-        <th>Order #</th>
-        <th>Ordered at</th>
-        <th>Pick up at</th>
-        <th>Customer Name</th>
-        <th>Item</th>
-        <th>Qty</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {orders.map((order) => (
-        <OrderRow order={order} />
-      ))}
-    </tbody>
-  </table>
-);
+import OrderRow from "./orderRow";
 
-const OrderRow = ({ order }) => {
+const OrderTable = ({ orders, isLoading, fetchOrdersHandler, rowHandler }) => {
+  const orderSortingHandler = (sortBy) => {
+    fetchOrdersHandler(sortBy);
+  };
+
   return (
-    <tr>
-      <td>{order.id}</td>
-      <td>{formatDate(order.created_at)}</td>
-      <td>{formatDate(order.pick_up_at)}</td>
-      <td>{order.customer_name}</td>
-      <td>{order.item}</td>
-      <td>{order.quantity}</td>
-      <td>{order.fulfilled ? `Fulfilled` : `In progress`}</td>
-      <td></td>
-    </tr>
+    <>
+      <table className="table orders-table">
+        <thead>
+          <tr>
+            <th onClick={() => orderSortingHandler("id")}>
+              <u>Order #</u>
+            </th>
+            <th>Ordered at</th>
+            <th onClick={() => orderSortingHandler("pick_up_at")}>
+              <u>Pick up at</u>
+            </th>
+            <th onClick={() => orderSortingHandler("customer_name")}>
+              <u>Customer Name</u>
+            </th>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {!isLoading &&
+            orders.map((order) => (
+              <OrderRow
+                key={order.id}
+                order={order}
+                onClickEvent={rowHandler}
+              />
+            ))}
+        </tbody>
+      </table>
+      {isLoading && <p>Loading...</p>}
+    </>
   );
-};
-
-const formatDate = (dateString) => {
-  let date = new Date(dateString);
-  return date.toLocaleDateString();
 };
 
 export default OrderTable;
