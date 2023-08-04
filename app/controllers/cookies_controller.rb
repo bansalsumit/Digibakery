@@ -18,6 +18,7 @@ class CookiesController < ApplicationController
       cookie_params[:batch_size].to_i.times do
         @cookies << @oven.cookies.create!(cookie_params.slice(:fillings))
       end
+      Oven.start_cooking(@oven.id, current_user.id)
     end
     redirect_to oven_path(@oven)
   end

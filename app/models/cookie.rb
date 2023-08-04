@@ -5,6 +5,6 @@ class Cookie < ActiveRecord::Base
   validates :storage, presence: true
 
   def ready?
-    true
+    !(self.storage_type == Oven.to_s)
   end
 end
